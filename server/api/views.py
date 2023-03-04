@@ -65,7 +65,7 @@ class platformView(ListAPIView):
                         "submissionTime": datetime.datetime.fromtimestamp(problem["creationTimeSeconds"]).strftime('%Y-%m-%d %H:%M:%S'),
                         "problemName": problem["problem"]["name"],
                         "problemLink": f"https://codeforces.com/problemset/problem/{problem['problem']['contestId']}/{problem['problem']['index']}",
-                        "verdict": problem["verdict"],
+                        "verdict": "AC "if problem["verdict"] == "OK" else "WA",
                         "problemTags": problem["problem"]["tags"]
                     })  
 
