@@ -1,5 +1,6 @@
 import requests
 import datetime
+import json
 from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 
@@ -157,7 +158,46 @@ class platformView(ListAPIView):
 
 
     def __leetcode(self):
-        pass
+        url = f'https://leetcode.com/{self.__username}'
+        
+        if requests.get(url).status_code != 200:
+            return Response({"status": 404, "message" : "User not found"})
+
+        payload = {
+            "operationName": "getUserProfile",
+            "variables": {
+                "username": self.__username
+            },
+            "query": "query getUserProfile($username: String!) {  allQuestionsCount {    difficulty    count  }  matchedUser(username: $username) {    contributions {    points      questionCount      testcaseCount    }    profile {    reputation      ranking    }    submitStats {      acSubmissionNum {        difficulty        count        submissions      }      totalSubmissionNum {        difficulty        count        submissions      }    }  }}"
+        }
+
+        res = requests.post(url='https://leetcode.com/graphql',
+                            json=payload,
+                            headers={'referer': f'https://leetcode.com/{self.__username}/'})
+        
+        try:
+            res.raise_for_status()
+
+            if(res.status_code != 200):
+                return Response({"status": 500, "message" : "Some error occured"})
+                                
+            res = res.json()
+            res = json.loads(json.dumps(res))
+
+            print(res)
+
+            data = dict()
+            data["username"] = self.__username
+            data["Reputation"] = res['data']['matchedUser']['profile']['reputation']
+            data["Ranking"] = res['data']['matchedUser']['profile']['ranking']
+            data["Accepted Submissions"] = res['data']['matchedUser']['submitStats']['acSubmissionNum'][0]['submissions']
+            data["Total Submissions"] = res['data']['matchedUser']['submitStats']['totalSubmissionNum'][0]['submissions']
+            data["Accuracy"] = round((data['Accepted Submissions']/data['Total Submissions'])*100,2)
+        
+            return Response(data)
+
+        except:
+            return Response({"status": 500, "message" : "Too Many Requests"})
 
     def __atcoder(self):
         pass
