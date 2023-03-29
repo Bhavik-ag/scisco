@@ -25,6 +25,8 @@ class NewUser(AbstractBaseUser):
     bio = models.TextField(max_length=200, blank=True)
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
 
+    friends = models.ManyToManyField('self', blank=True)
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'user_name'

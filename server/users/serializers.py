@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from users.models import NewUser, UserProfiles
 
-class RegisterUserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(max_length=50, required=True, write_only = True)
     user_name = serializers.CharField(max_length=50, required=True)
@@ -9,7 +9,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = NewUser
-        fields = ['user_name', 'email', 'first_name', 'password', 'last_name', 'bio']
+        fields = ['user_name', 'email', 'first_name', 'password', 'last_name', 'bio', 'profile_pic']
         extra_kwargs = {'email':{'write_only' : True},'password': {'write_only': True}}
 
     def validate(self, args):
@@ -24,4 +24,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         return super().validate(args)
 
     def create(self, validated_data):
-        return NewUser.objects.create_user(**validated_data)
+        return NewUser.objects.create_user(**validated_data)    
+    
+class UserProfilesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfiles
+        fields = ['codeforces', 'codechef', 'leetcode', 'atcoder', 'github', 'linkedin', 'website']
+
+    def create(self, validated_data):
+        return UserProfiles.objects.create(**validated_data)
