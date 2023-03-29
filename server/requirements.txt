@@ -7,3 +7,5 @@ requests-html
 psycopg2
 dj-database-url
 gunicorn==20.1.0
+djangorestframework-simplejwt
+Pillow==9.4.0
