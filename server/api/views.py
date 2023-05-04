@@ -7,7 +7,7 @@ from requests_html import HTMLSession
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
-class platformView(ListAPIView):
+class PlatformView(ListAPIView):
 
     def get(self, request, *args, **kwargs):
         self.__platform = kwargs.get('platform')
@@ -201,5 +201,3 @@ class platformView(ListAPIView):
 
     def __atcoder(self):
         pass
-
-platform_view = platformView.as_view()
