@@ -18,16 +18,19 @@ class ListCreateUserView(APIView):
     def get(self, request, *args, **kwargs):
         user_name = request.GET.get('user_name')
         if user_name:
-            user = self.queryset.get(user_name=user_name)
-            serializer = self.serializer_class(user)
             try:
-                profiles = UserProfiles.objects.get(user=user)
-                if profiles:
-                    profile_serializer = UserProfilesSerializer(profiles)
-                    return Response({"user": serializer.data, "profiles": profile_serializer.data}, status=status.HTTP_200_OK)
-                return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+                user = self.queryset.get(user_name=user_name)
+                serializer = self.serializer_class(user)
+                try:    
+                    profiles = UserProfiles.objects.get(user=user)
+                    if profiles:
+                        profile_serializer = UserProfilesSerializer(profiles)
+                        return Response({"user": serializer.data, "profiles": profile_serializer.data}, status=status.HTTP_200_OK)
+                    return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+                except:
+                    return Response({"user": serializer.data}, status=status.HTTP_200_OK)
             except:
-                return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+                return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_400_BAD_REQUEST)   
 
     def post(self, request):        
