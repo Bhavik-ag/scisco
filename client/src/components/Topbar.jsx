@@ -1,6 +1,7 @@
-import { Box, IconButton, useTheme, InputBase } from "@mui/material";
+import { Box, IconButton, useTheme, InputBase, Button } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, colorTokens } from "../theme";
+import AuthContext from "../context/AuthContext";
 
 import {
     LightModeOutlined,
@@ -11,10 +12,15 @@ import {
     Search,
 } from "@mui/icons-material";
 
+import { useNavigate } from "react-router-dom";
+
 const Topbar = () => {
     const theme = useTheme();
     const colors = colorTokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
+    const navigate = useNavigate();
+
+    let { user, logoutUser } = useContext(AuthContext);
 
     return (
         <Box display="flex" justifyContent="space-between" p={2}>
@@ -32,26 +38,23 @@ const Topbar = () => {
 
             {/* Icons  */}
             <Box display="flex">
-                <IconButton
-                    type="button"
-                    sx={{ p: 1 }}
-                    onClick={colorMode.toggleColorMode}
-                >
-                    {theme.palette.mode === "dark" ? (
-                        <DarkModeOutlined />
-                    ) : (
-                        <LightModeOutlined />
-                    )}
-                </IconButton>
-                <IconButton type="button" sx={{ p: 1 }}>
-                    <NotificationsOutlined />
-                </IconButton>
-                <IconButton type="button" sx={{ p: 1 }}>
-                    <SettingsOutlined />
-                </IconButton>
-                <IconButton type="button" sx={{ p: 1 }}>
-                    <PersonOutlined />
-                </IconButton>
+                {user ? (
+                    <Button
+                        variant="contained"
+                        sx={{ fontSize: "13px" }}
+                        onClick={logoutUser}
+                    >
+                        Logout
+                    </Button>
+                ) : (
+                    <Button
+                        variant="contained"
+                        sx={{ fontSize: "13px" }}
+                        onClick={() => navigate("/login")}
+                    >
+                        Login
+                    </Button>
+                )}
             </Box>
         </Box>
     );

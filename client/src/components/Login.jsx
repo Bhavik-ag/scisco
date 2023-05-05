@@ -11,6 +11,8 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material";
 import { colorTokens } from "../theme";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 const Copyright = (props) => {
     return (
@@ -33,15 +35,7 @@ const Copyright = (props) => {
 const Login = () => {
     const theme = useTheme();
     const colors = colorTokens(theme.palette.mode);
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-        });
-    };
+    let { loginUser } = useContext(AuthContext);
 
     return (
         <Box
@@ -69,21 +63,17 @@ const Login = () => {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1 }}
-                >
+                <Box component="form" onSubmit={loginUser} sx={{ mt: 1 }}>
                     <TextField
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
+                        id="user_name"
+                        label="Username"
+                        name="user_name"
                         autoComplete="email"
                         autoFocus
+                        sx={{ required: true }}
                     />
                     <TextField
                         margin="normal"
@@ -94,10 +84,6 @@ const Login = () => {
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
                     />
                     <Button
                         type="submit"
