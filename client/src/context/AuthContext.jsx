@@ -78,9 +78,10 @@ export const AuthProvider = ({ children }) => {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: "Bearer " + authTokens?.access,
                 },
                 body: JSON.stringify({
-                    refresh: authTokens.refresh,
+                    refresh: authTokens?.refresh,
                 }),
             }
         );
@@ -99,6 +100,10 @@ export const AuthProvider = ({ children }) => {
         } else {
             logoutUser();
         }
+
+        if (loading) {
+            setLoading(false);
+        }
     };
 
     let contextData = {
@@ -108,6 +113,10 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
+        if (loading) {
+            updateToken();
+        }
+
         const timeToRefresh = 1000 * 60 * 150;
         let interval = setInterval(() => {
             if (authTokens) {
@@ -121,7 +130,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={contextData}>
-            {children}
+            {loading ? null : children}
         </AuthContext.Provider>
     );
 };
