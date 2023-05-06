@@ -5,38 +5,15 @@ import Topbar from "../../components/Topbar";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext";
 
-import { Box } from "@mui/material";
+import { Box, Grid, Paper } from "@mui/material";
+import ProfileCard from "../profile";
 
 const Dashboard = () => {
-    let { user, authTokens } = useContext(AuthContext);
-    let [userData, setUserData] = useState(null);
-
-    useEffect(() => {
-        getUserData();
-    }, []);
-
-    let getUserData = async () => {
-        let response = await fetch(
-            "https://scisco.onrender.com/users?user_name=" + user.user_name,
-            {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-
-        let data = await response.json();
-
-        if (response.status === 200) {
-            console.log(data);
-            setUserData(data.user);
-        }
-    };
+    let { user } = useContext(AuthContext);
 
     return (
         <>
-            <Sidebar />
+            {/* <Sidebar /> */}
             <main className="content">
                 <Topbar />
                 <Box m="20px">
@@ -51,7 +28,30 @@ const Dashboard = () => {
                         />
                     </Box>
                 </Box>
-                <Box>{userData && <p>{userData.bio}</p>}</Box>
+                <Box display="flex" justifyContent="center" alignItems="center">
+                    <Grid container rowSpacing={1} width="90vw">
+                        <Grid item xs={12} md={4} padding={1}>
+                            <Paper elevation={2} sx={{ padding: "15px" }}>
+                                <ProfileCard />
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={8} padding={1}>
+                            <Paper elevation={2} sx={{ padding: "15px" }}>
+                                2 - Nice
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={6} padding={1}>
+                            <Paper elevation={2} sx={{ padding: "15px" }}>
+                                3 - Nice
+                            </Paper>
+                        </Grid>
+                        <Grid item xs={12} md={6} padding={1}>
+                            <Paper elevation={2} sx={{ padding: "15px" }}>
+                                4 - Nice
+                            </Paper>
+                        </Grid>
+                    </Grid>
+                </Box>
             </main>
         </>
     );
