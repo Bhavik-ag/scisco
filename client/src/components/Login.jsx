@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -13,24 +12,8 @@ import { useTheme } from "@mui/material";
 import { colorTokens } from "../theme";
 import { useContext } from "react";
 import AuthContext from "../context/AuthContext";
-
-const Copyright = (props) => {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            {"Copyright © "}
-            <Link color="inherit" href="/">
-                Scisco
-            </Link>{" "}
-            {new Date().getFullYear()}
-            {"."}
-        </Typography>
-    );
-};
+import Copyright from "./Copyright";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const theme = useTheme();
@@ -95,8 +78,17 @@ const Login = () => {
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
+                            <Link to="/register">
+                                <Typography
+                                    sx={{
+                                        textDecoration: "underline",
+                                        color: "black",
+                                    }}
+                                    component="span"
+                                    variant="body2"
+                                >
+                                    Already have an account? Sign in
+                                </Typography>
                             </Link>
                         </Grid>
                     </Grid>
