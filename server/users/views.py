@@ -26,9 +26,9 @@ class ListCreateUserView(APIView):
                     if profiles:
                         profile_serializer = UserProfilesSerializer(profiles)
                         return Response({"user": serializer.data, "profiles": profile_serializer.data}, status=status.HTTP_200_OK)
-                    return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+                    return Response({"user": serializer.data, "profiles" : None}, status=status.HTTP_200_OK)
                 except:
-                    return Response({"user": serializer.data}, status=status.HTTP_200_OK)
+                    return Response({"user": serializer.data, "profiles" : None}, status=status.HTTP_200_OK)
             except:
                 return Response({"message": "User not found"}, status=status.HTTP_404_NOT_FOUND)
         return Response(status=status.HTTP_400_BAD_REQUEST)   
@@ -91,7 +91,7 @@ class UserProfilesView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def put(self, request):

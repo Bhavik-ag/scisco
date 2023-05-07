@@ -32,6 +32,51 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
+    const registerUser = async (event, handleNext) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+
+        let response = await fetch("https://scisco.onrender.com/users/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                firstName: formData.get("firstName"),
+                user_name: formData.get("username"),
+                lastName: formData.get("lastName"),
+                email: formData.get("email"),
+                password: formData.get("password"),
+            }),
+        });
+
+        const data = await response.json();
+
+        console.log(data);
+
+        if (response.status === 201) {
+            setAuthTokens(data);
+            const user = {
+                user_name: formData.get("username"),
+                authTokens: data,
+            };
+            setUser(user);
+            document.cookie = `user=${JSON.stringify(user)} path=/;`;
+            handleNext();
+        } else {
+            if (response.status === 400) {
+                if (data.email) {
+                    alert("Email is already in use");
+                }
+                if (data.user_name) {
+                    alert("Username is already in use");
+                }
+            } else {
+                alert("Something went wrong");
+            }
+        }
+    };
+
     let loginUser = async (event) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -87,7 +132,7 @@ export const AuthProvider = ({ children }) => {
         );
         let data = await response.json();
 
-        // console.log(data);
+        console.log(data);
 
         if (response.status === 200) {
             setAuthTokens(data);
@@ -109,6 +154,7 @@ export const AuthProvider = ({ children }) => {
     let contextData = {
         user: user,
         loginUser: loginUser,
+        registerUser: registerUser,
         logoutUser: logoutUser,
     };
 

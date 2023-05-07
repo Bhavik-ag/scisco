@@ -12,6 +12,7 @@ import Login from "./components/Login";
 // import Notes from "./pages/notes";
 // import Settings from "./pages/settings";
 import PrivateRoutes from "./utils/PrivateRoutes";
+import RegisterPage from "./components/RegisterPage";
 
 function App() {
     const [theme, colorMode] = useMode();
@@ -32,6 +33,10 @@ function App() {
                                     />
                                 </Route>
                                 <Route element={<Login />} path="/login" />
+                                <Route
+                                    element={<RegisterPage />}
+                                    path="/register"
+                                />
                                 {/* <Route
                                     path="/calender"
                                     element={<Calender />}
