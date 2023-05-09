@@ -36,19 +36,22 @@ export const AuthProvider = ({ children }) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
 
-        let response = await fetch("https://scisco.onrender.com/users/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                firstName: formData.get("firstName"),
-                user_name: formData.get("username"),
-                lastName: formData.get("lastName"),
-                email: formData.get("email"),
-                password: formData.get("password"),
-            }),
-        });
+        let response = await fetch(
+            `${import.meta.env.VITE_SERVER_ENDPOINT}users/`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    first_name: formData.get("firstName"),
+                    user_name: formData.get("username"),
+                    last_name: formData.get("lastName"),
+                    email: formData.get("email"),
+                    password: formData.get("password"),
+                }),
+            }
+        );
 
         const data = await response.json();
 
@@ -81,16 +84,19 @@ export const AuthProvider = ({ children }) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
 
-        let response = await fetch("https://scisco.onrender.com/users/login/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                user_name: formData.get("user_name"),
-                password: formData.get("password"),
-            }),
-        });
+        let response = await fetch(
+            `${import.meta.env.VITE_SERVER_ENDPOINT}users/login/`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    user_name: formData.get("user_name"),
+                    password: formData.get("password"),
+                }),
+            }
+        );
 
         const data = await response.json();
 
@@ -117,8 +123,9 @@ export const AuthProvider = ({ children }) => {
 
     let updateToken = async () => {
         console.log("Update Token Called");
+
         let response = await fetch(
-            "https://scisco.onrender.com/users/token/refresh/",
+            `${import.meta.env.VITE_SERVER_ENDPOINT}users/token/refresh/`,
             {
                 method: "POST",
                 headers: {
@@ -145,6 +152,8 @@ export const AuthProvider = ({ children }) => {
         } else {
             logoutUser();
         }
+
+        console.log(loading);
 
         if (loading) {
             setLoading(false);
