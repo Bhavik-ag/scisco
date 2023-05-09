@@ -13,7 +13,7 @@ const FormStepTwo = ({ handleNext }) => {
         const formData = new FormData(event.currentTarget);
 
         let response = await fetch(
-            "https://scisco.onrender.com/users/profiles/",
+            `${import.meta.env.VITE_SERVER_ENDPOINT}users/profiles/`,
             {
                 method: "POST",
                 headers: {
