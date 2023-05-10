@@ -37,6 +37,7 @@ function App() {
                                     element={<RegisterPage />}
                                     path="/register"
                                 />
+                                <Route path="/" element={<Login />} />
                                 {/* <Route
                                     path="/calender"
                                     element={<Calender />}

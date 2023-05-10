@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
                     user_name: formData.get("username"),
                     last_name: formData.get("lastName"),
                     email: formData.get("email"),
+                    bio: formData.get("bio"),
                     password: formData.get("password"),
                 }),
             }
