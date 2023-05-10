@@ -61,6 +61,20 @@ const FormStepOne = ({ handleNext }) => {
                         autoComplete="new-password"
                     />
                 </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth
+                        name="bio"
+                        label="Bio"
+                        type="bio"
+                        id="bio"
+                        autoComplete="bio"
+                        placeholder="Bio (in max 200 characters)"
+                        multiline
+                        rows={4}
+                        inputProps={{ maxLength: 200 }}
+                    />
+                </Grid>
             </Grid>
             <Button
                 type="submit"
